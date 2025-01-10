@@ -1,0 +1,3 @@
+# Added to git ignore because of opensubtitle login credentials
+scripts/autosub.lua
+.vscode
