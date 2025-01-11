@@ -1,5 +1,7 @@
 # MPV Scripts
 
+This repository contains my MPV Configs, Scripts & Keybinds. This was setup on Windows 11, so some changes might be necessary (Like file paths & cli commands) to make it work on Linux/MacOS.
+
 ## Script Breakdown
 
 - [autoload](./scripts/autoload.lua) - [[source]()] - This script automatically loads playlist entries before and after the currently played file. 
@@ -21,14 +23,16 @@
 
 ## Installing (Windows)  
 
+> Prerequisites - [mpv](https://mpv.io/installation/), [git](https://git-scm.com/) & [python (pip)](https://www.python.org/downloads/).
+
 1. Navigate to `%APPDATA%` by using the run menu `Win + r`
 
-1. Cloning the repository
+2. Cloning the repository
 
     ```git 
     git clone https://github.com/ThunderE75/mpv-scripts mpv
     ```
-1. Download Subliminal (for autosub.lua)
+3. Download Subliminal (for [autosub.lua](./scripts/autosub.lua))
 
    ```
    pip install subliminal
@@ -37,7 +41,7 @@
 ## Key Bindings
 
 
-| Key Bind             | Effect                                     |
+| Key Bind             | Description                                |
 | -------------------- | ------------------------------------------ |
 | `b`                  | blackout (black screen)                    |
 | `ctrl + DEL`         | mark/unmark file to be deleted             |
