@@ -270,11 +270,10 @@ local osc_param = {                  -- calculated by osc_init()
 
 local icons = {
     window = {
-        -- Updated icons to -> U+25CF (● Black Circle)
-        maximize = "\226\151\143",      -- Default -> U+E5AB (🔲 Maximize)
-        unmaximize = "\226\151\143",    -- Default -> U+EB96 (🗗 Unmaximize)
-        minimize = "\226\151\143",      -- Default -> U+EF90 (➖ Minimize)
-        close = "\226\151\143",         -- Default -> U+F169 (✖ Close)
+        maximize = "\238\159\171",      -- U+E5AB (🔲 Maximize)
+        unmaximize = "\238\174\150",    -- U+EB96 (🗗 Unmaximize)
+        minimize = "\238\175\144",      -- U+EF90 (➖ Minimize)
+        close = "\239\141\169",         -- U+F169 (✖ Close)
     },
     audio = "\238\175\139",         -- U+EF8B (🔊 Audio)
     subtitle = "\238\175\141",      -- U+EF8D (💬 Subtitle)
