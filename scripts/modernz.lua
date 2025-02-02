@@ -270,48 +270,49 @@ local osc_param = {                  -- calculated by osc_init()
 
 local icons = {
     window = {
-        maximize = "\238\159\171",
-        unmaximize = "\238\174\150",
-        minimize = "\238\175\144",
-        close = "\239\141\169",
+        maximize = "\238\159\171",      -- U+E5AB (🔲 Maximize)
+        unmaximize = "\238\174\150",    -- U+EB96 (🗗 Unmaximize)
+        minimize = "\238\175\144",      -- U+EF90 (➖ Minimize)
+        close = "\239\141\169",         -- U+F169 (✖ Close)
     },
-    audio = "\238\175\139",
-    subtitle = "\238\175\141",
-    playlist = "\238\161\159",
-    menu = "\238\160\170",
-    volume_mute = "\238\173\138",
-    volume_quiet = "\238\172\184",
-    volume_low = "\238\172\189",
-    volume_high = "\238\173\130",
+    audio = "\238\175\139",         -- U+EF8B (🔊 Audio)
+    subtitle = "\238\175\141",      -- U+EF8D (💬 Subtitle)
+    playlist = "\238\161\159",      -- U+E59F (📜 Playlist)
+    menu = "\238\160\170",          -- U+E5AA (📑 Menu)
+    volume_mute = "\238\173\138",   -- U+EB8A (🔇 Volume Mute)
+    volume_quiet = "\238\172\184",  -- U+EBA8 (🔉 Volume Quiet)
+    volume_low = "\238\172\189",    -- U+EBAD (🔈 Volume Low)
+    volume_high = "\238\173\130",   -- U+EB82 (🔊 Volume High)
 
-    play = "\238\166\143",
-    pause = "\238\163\140",
-    replay = "\238\189\191",
-    previous = "\239\152\167",
-    next = "\239\149\168",
-    rewind = "\238\168\158",
-    forward = "\238\152\135",
+    play = "\238\166\143",          -- U+E68F (▶ Play)
+    pause = "\238\163\140",         -- U+E5CC (⏸ Pause)
+    replay = "\238\189\191",        -- U+F6BF (🔄 Replay)
+    previous = "\239\152\167",      -- U+F4A7 (⏮ Previous)
+    next = "\239\149\168",          -- U+F628 (⏭ Next)
+    rewind = "\238\168\158",        -- U+E69E (⏪ Rewind)
+    forward = "\238\152\135",       -- U+E487 (⏩ Forward)
+
     jump = { 
-        [5] = {"\238\171\186", "\238\171\187"},
-        [10] = {"\238\171\188", "\238\172\129"},
-        [30] = {"\238\172\133", "\238\172\134"},
-        default = {"\238\172\138", "\238\172\138"}, -- second icon is mirrored in layout()
+        [5] = {"\238\171\186", "\238\171\187"},   -- U+EB7A (⏳), U+EB7B (⏳)
+        [10] = {"\238\171\188", "\238\172\129"},  -- U+EB7C (⏳), U+EB81 (⏳)
+        [30] = {"\238\172\133", "\238\172\134"},  -- U+EB85 (⏳), U+EB86 (⏳)
+        default = {"\238\172\138", "\238\172\138"} -- U+EB8A (🔇), U+EB8A (🔇) -- second icon is mirrored in layout()
     },
 
-    fullscreen = "\239\133\160",
-    fullscreen_exit = "\239\133\166",
-    info = "\239\146\164",
-    ontop_on = "\238\165\190",
-    ontop_off = "\238\166\129",
-    screenshot = "\238\169\150",
-    loop_off = "\239\133\178",
-    loop_on = "\239\133\181",
-    speed = "\239\160\177",
-    download = "\239\133\144",
-    downloading = "\239\140\174",
+    fullscreen = "\239\133\160",        -- U+F0A0 (🖥 Fullscreen)
+    fullscreen_exit = "\239\133\166",   -- U+F0A6 (⛔ Fullscreen Exit)
+    info = "\239\146\164",              -- U+F424 (ℹ Info)
+    ontop_on = "\238\165\190",          -- U+E5BE (🗙 OnTop On)
+    ontop_off = "\238\166\129",         -- U+E5C1 (🔲 OnTop Off)
+    screenshot = "\238\169\150",        -- U+E69E (📸 Screenshot)
+    loop_off = "\239\133\178",          -- U+F0B2 (🔁 Loop Off)
+    loop_on = "\239\133\181",           -- U+F0B5 (🔂 Loop On)
+    speed = "\239\160\177",             -- U+F50F (⚡ Speed)
+    download = "\239\133\144",          -- U+F090 (📥 Download)
+    downloading = "\239\140\174",       -- U+F5BE (⬇ Downloading)
 
-    zoom_in = "\238\186\142",
-    zoom_out = "\238\186\143",
+    zoom_in = "\238\186\142",           -- U+E8A6 (🔍 Zoom In)
+    zoom_out = "\238\186\143",          -- U+E8A7 (🔍 Zoom Out)
 }
 
 --- localization
