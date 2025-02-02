@@ -27,7 +27,7 @@ local user_opts = {
     showwindowed = true,                   -- show OSC when windowed
     showfullscreen = true,                 -- show OSC when fullscreen
     showonpause = true,                    -- show OSC when paused
-    keeponpause = true,                    -- disable OSC hide timeout when paused 
+    keeponpause = false,                   -- disable OSC hide timeout when paused 
     greenandgrumpy = false,                -- disable Santa hat in December
 
     -- OSC behaviour and scaling
