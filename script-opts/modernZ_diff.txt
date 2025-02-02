@@ -1,0 +1,42 @@
+# font size of the title text (above seekbar)
+title_font_size=16
+# chapter title font size
+chapter_title_font_size=12
+
+# font size of the time display
+time_font_size=14
+# tooltips font size
+tooltip_font_size=12
+
+# amount by which subtitles are raised when the OSC is shown (in pixels)
+raise_subtitle_amount=96
+
+# color of close window control on hover
+windowcontrols_close_hover=#F74A4A
+# color of maximize window controls on hover
+windowcontrols_max_hover=#F7B84A
+# color of minimize window controls on hover
+windowcontrols_min_hover=#F7B84A
+
+# color of the seekbar progress and handle
+seekbarfg_color=#70ADFF
+# color of the remaining seekbar
+seekbarbg_color=#70ADFF
+
+# color of a hovered button when hover_effect includes "color"
+hover_effect_color=#70ADFF
+
+# alpha of the window title bar (0 to disable)
+window_fade_alpha=75
+# width of the thumbnail border (for thumbfast)
+thumbnail_border=2
+# rounded corner radius for thumbnail border (0 to disable)
+thumbnail_border_radius=0
+
+
+# glow intensity when "glow" hover effect is active
+button_glow_amount=3
+
+# portrait window width trigger to move some elements
+portrait_window_trigger=930
+
