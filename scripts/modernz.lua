@@ -33,12 +33,15 @@ local user_opts = {
     -- OSC behaviour and scaling
     hidetimeout = 1500,                    -- time (in ms) before OSC hides if no mouse movement
     seek_resets_hidetimeout = true,        -- if seeking should reset the hidetimeout
-    fadeduration = 250,                    -- fade-out duration (in ms), set to 0 for no fade
+    fadeduration = 200,                    -- fade-out duration (in ms), set to 0 for no fade
+    fadein = false,                        -- whether to enable fade-in effect
     minmousemove = 0,                      -- minimum mouse movement (in pixels) required to show OSC
     bottomhover = true,                    -- show OSC only when hovering at the bottom
     bottomhover_zone = 130,                -- height of hover zone for bottomhover (in pixels)
     osc_on_seek = false,                   -- show OSC when seeking
+    osc_on_start = false,                  -- show OSC on start of every file
     mouse_seek_pause = true,               -- pause video while seeking with mouse move (on button hold)
+    force_seek_tooltip = false,            -- force show seekbar tooltip on mouse drag, even if not hovering seekbar
 
     vidscale = "auto",                     -- scale osc with the video
     scalewindowed = 1.0,                   -- osc scale factor when windowed
@@ -103,6 +106,8 @@ local user_opts = {
 
     loop_button = false,                   -- show loop button
     speed_button = false,                  -- show speed control button
+    speed_button_click = 1,                -- speed change amount per click
+    speed_button_scroll = 0.25,            -- speed change amount on scroll
 
     loop_in_pause = true,                  -- enable looping by right-clicking pause
 
@@ -253,6 +258,9 @@ local user_opts = {
     -- fullscreen button mouse actions
     fullscreen_mbtn_left_command = "cycle fullscreen",
     fullscreen_mbtn_right_command = "cycle window-maximized",
+
+    -- info button mouse actions
+    info_mbtn_left_command = "script-binding stats/display-page-1-toggle",
 }
 
 mp.observe_property("osc", "bool", function(name, value) if value == true then mp.set_property("osc", "no") end end)
@@ -512,9 +520,8 @@ local state = {
     initialborder = mp.get_property("border"),
     playtime_hour_force_init = false,       -- used to force request_init() once
     playtime_nohour_force_init = false,     -- used to force request_init() once
-    playingWhilstSeeking = false,
-    playingWhilstSeekingWaitingForEnd = false,
-    persistentprogresstoggle = user_opts.persistentprogress,
+    playing_and_seeking = false,
+    persistent_progress_toggle = user_opts.persistentprogress,
     original_subpos = mp.get_property_number("sub-pos") or 100,
     downloaded_once = false,
     downloading = false,
@@ -1140,7 +1147,13 @@ local function render_elements(master_ass)
                 
                 -- add tooltip
                 if element.slider.tooltipF ~= nil and element.enabled then
-                    if mouse_hit(element) then
+                    local force_seek_tooltip = user_opts.force_seek_tooltip
+                        and element.name == "seekbar"
+                        and element.eventresponder["mbtn_left_down"]
+                        and element.state.mbtnleft
+                        and state.mouse_down_counter > 0
+                        and state.playing_and_seeking
+                    if mouse_hit(element) or force_seek_tooltip then
                         local sliderpos = get_slider_value(element)
                         local tooltiplabel = element.slider.tooltipF(sliderpos)
                         local an = slider_lo.tooltip_an
@@ -1704,7 +1717,7 @@ layouts["modern"] = function ()
     lo.slider.tooltip_style = osc_styles.tooltip
     lo.slider.tooltip_an = 2
 
-    if user_opts.persistentprogress or state.persistentprogresstoggle then
+    if user_opts.persistentprogress or state.persistent_progress_toggle then
         lo = add_layout("persistentseekbar")
         lo.geometry = {x = refX, y = refY, an = 5, w = osc_geo.w, h = user_opts.persistentprogressheight}
         lo.style = osc_styles.seekbar_fg
@@ -2248,7 +2261,7 @@ local function osc_init()
     ne.content = function ()
         if mp.get_property("eof-reached") == "yes" then
             return icons.replay
-        elseif mp.get_property("pause") == "yes" and not state.playingWhilstSeeking then
+        elseif mp.get_property("pause") == "yes" and not state.playing_and_seeking then
             return icons.play
         else
             return icons.pause
@@ -2486,7 +2499,7 @@ local function osc_init()
     ne.tooltip_style = osc_styles.tooltip
     ne.tooltipF = user_opts.tooltip_hints and locale.stats_info or ""
     ne.visible = (osc_param.playresx >= 650 - outeroffset - (user_opts.fullscreen_button and 0 or 100))
-    ne.eventresponder["mbtn_left_up"] = function () mp.commandv("script-binding", "stats/display-page-1-toggle") end
+    ne.eventresponder["mbtn_left_up"] = command_callback(user_opts.info_mbtn_left_command)
 
     --tog_ontop
     ne = new_element("tog_ontop", "button")
@@ -2544,10 +2557,16 @@ local function osc_init()
     ne.visible = (osc_param.playresx >= 1150 - outeroffset - (user_opts.loop_button and 0 or 100) - (user_opts.screenshot_button and 0 or 100) - (user_opts.ontop_button and 0 or 100) - (user_opts.info_button and 0 or 100) - (user_opts.fullscreen_button and 0 or 100))
     ne.tooltip_style = osc_styles.tooltip
     ne.tooltipF = user_opts.tooltip_hints and locale.speed_control or ""
-    ne.eventresponder["mbtn_left_up"] = function () mp.commandv("osd-msg", "set", "speed", math.min(100, mp.get_property_number("speed") + 1)) end
+    ne.eventresponder["mbtn_left_up"] = function ()
+        mp.commandv("osd-msg", "set", "speed", math.min(100, mp.get_property_number("speed") + user_opts.speed_button_click))
+    end
     ne.eventresponder["mbtn_right_up"] = function () mp.commandv("osd-msg", "set", "speed", 1) end
-    ne.eventresponder["wheel_up_press"] = function () mp.commandv("osd-msg", "set", "speed", math.min(100, mp.get_property_number("speed") + 0.25)) end
-    ne.eventresponder["wheel_down_press"] = function () mp.commandv("osd-msg", "set", "speed", math.max(0.25, mp.get_property_number("speed") - 0.25)) end
+    ne.eventresponder["wheel_up_press"] = function ()
+        mp.commandv("osd-msg", "set", "speed", math.min(100, mp.get_property_number("speed") + user_opts.speed_button_scroll))
+    end
+    ne.eventresponder["wheel_down_press"] = function ()
+        mp.commandv("osd-msg", "set", "speed", math.max(0.25, mp.get_property_number("speed") - user_opts.speed_button_scroll))
+    end
 
     --download
     ne = new_element("download", "button")
@@ -2670,8 +2689,8 @@ local function osc_init()
         -- mouse move events may pile up during seeking and may still get
         -- sent when the user is done seeking, so we need to throw away
         -- identical seeks
+        state.playing_and_seeking = true
         if mp.get_property("pause") == "no" and user_opts.mouse_seek_pause then
-            state.playingWhilstSeeking = true
             mp.commandv("cycle", "pause")
         end
         local seekto = get_slider_value(element)
@@ -2714,11 +2733,11 @@ local function osc_init()
     end
     ne.eventresponder["reset"] = function (element)
         element.state.lastseek = nil
-        if state.playingWhilstSeeking then
-            if mp.get_property("eof-reached") == "no" then
+        if state.playing_and_seeking then
+            if mp.get_property("eof-reached") == "no" and user_opts.mouse_seek_pause then
                 mp.commandv("cycle", "pause")
             end
-            state.playingWhilstSeeking = false
+            state.playing_and_seeking = false
         end
     end
     ne.eventresponder["wheel_up_press"] = function () mp.commandv("seek", 10) end
@@ -2800,18 +2819,13 @@ local function osc_init()
     ne.content = function()
         local playback_time = mp.get_property_number("playback-time", 0)
 
-        -- force request_init() once to update time codes width hitbox
-        -- run once when less than hour, once again if hour or more
-        -- since request_init() is expensive, this is a measure to call it when needed only
+        -- call request_init() only when needed to update time code width
         if user_opts.time_format ~= "fixed" and playback_time then
-            if playback_time >= 3600 and not state.playtime_hour_force_init then
+            local hour_or_more = playback_time >= 3600
+            if hour_or_more ~= state.playtime_hour_force_init then
                 request_init()
-                state.playtime_hour_force_init = true
-                state.playtime_nohour_force_init = false
-            elseif playback_time < 3600 and not state.playtime_nohour_force_init then
-                request_init()
-                state.playtime_hour_force_init = false
-                state.playtime_nohour_force_init = true
+                state.playtime_hour_force_init = hour_or_more
+                state.playtime_nohour_force_init = not hour_or_more
             end
         end
 
@@ -2859,9 +2873,15 @@ local function show_osc()
     --remember last time of invocation (mouse move)
     state.showtime = mp.get_time()
 
+    if user_opts.fadeduration <= 0 then
     osc_visible(true)
-
-    if user_opts.fadeduration > 0 then
+    elseif user_opts.fadein then
+        if not state.osc_visible then
+            state.anitype = "in"
+            request_tick()
+        end
+    else
+        osc_visible(true)
         state.anitype = nil
     end
 end
@@ -3198,7 +3218,7 @@ local function render()
         render_elements(ass)
     end
 
-    if user_opts.persistentprogress or state.persistentprogresstoggle then
+    if user_opts.persistentprogress or state.persistent_progress_toggle then
         render_persistentprogressbar(ass)
     end
 
@@ -3286,10 +3306,6 @@ tick = function()
     end
 end
 
-local function shutdown()
-    mp.del_property("user-data/osc")
-end
-
 -- duration is observed for the sole purpose of updating chapter markers
 -- positions. live streams with chapters are very rare, and the update is also
 -- expensive (with request_init), so it's only observed when we have chapters
@@ -3333,8 +3349,10 @@ mp.register_event("file-loaded", function()
             user_opts.seekbarkeyframes = false
        end
     end
+    if user_opts.osc_on_start then
+        show_osc()
+    end
 end)
-mp.register_event("shutdown", shutdown)
 mp.register_event("start-file", request_init)
 mp.observe_property("track-list", "native", request_init)
 mp.observe_property("playlist-count", "native", request_init)
@@ -3349,10 +3367,16 @@ mp.observe_property("seeking", "native", function(_, seeking)
     if user_opts.seek_resets_hidetimeout then
         reset_timeout()
     end
-    if seeking and user_opts.osc_on_seek and not state.new_file_flag then
-        show_osc()
-    elseif state.new_file_flag then
+
+    if state.new_file_flag then
         state.new_file_flag = false
+        return
+    end
+
+    if seeking and user_opts.osc_on_seek then
+        mp.register_event("seek", show_osc) -- show OSC while seeking
+    else
+        mp.unregister_event(show_osc) -- remove event when seeking stops
     end
 end)
 mp.observe_property("fullscreen", "bool", function(_, val)
@@ -3560,7 +3584,7 @@ end)
 mp.add_key_binding(nil, "visibility", function() visibility_mode("cycle") end)
 mp.add_key_binding(nil, "progress-toggle", function()
     user_opts.persistentprogress = not user_opts.persistentprogress
-    state.persistentprogresstoggle = user_opts.persistentprogress
+    state.persistent_progress_toggle = user_opts.persistentprogress
     request_init()
 end)
 mp.register_script_message("osc-idlescreen", idlescreen_visibility)
