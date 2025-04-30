@@ -29,12 +29,12 @@ end
 function contains_item(l, i)
    for k, v in pairs(l) do
       if v == i then
-         mp.osd_message("un-deleting current file")
+         mp.osd_message("⭕ Un-Marking file to be Deleted")
          l[k] = nil
          return true
       end
    end
-   mp.osd_message("deleting current file")
+   mp.osd_message("🔴 Marking file to be Deleted ")
    return false
 end
 
@@ -89,7 +89,10 @@ function delete()
 end
 
 function showList()
-   local delString = "Delete Marks:\n"
+   -- local delString = "Marked to be Deleted:\n"
+   local delString = "🗑️ " .. #del_list .. "- Marked to be Deleted:\n"
+
+
    for _,v in pairs(del_list) do
       local dFile = v:gsub("/","\\")
       delString = delString..dFile:match("\\*([^\\]*)$").."; "
