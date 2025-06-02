@@ -4,7 +4,7 @@ This repository contains my MPV Configs, Scripts & Keybinds. This was setup on W
 
 ## Script Breakdown
 
-- [autoload](./scripts/autoload.lua) - [[source]()] - This script automatically loads playlist entries before and after the currently played file. 
+- [autoload](./scripts/autoload.lua) - [[source](https://github.com/mpv-player/mpv/blob/master/TOOLS/lua/autoload.lua)] - This script automatically loads playlist entries before and after the currently played file. 
 - [autosub](./scripts/) - [[source](https://github.com/davidde/mpv-autosub)] - This script uses Subliminal to download subtitles.
 - [blackout](./scripts/blackout.lua) - [[source](https://github.com/sibwaf/mpv-scripts/blob/master/blackout.lua)] - Turns the screen completely black and pauses on a button press ([b] by default)
 - [delete_file](./scripts/delete_file.lua) - [[source](https://github.com/zenyd/mpv-scripts/blob/master/delete_file.lua)] - This script is used to delete files.
@@ -43,17 +43,19 @@ This repository contains my MPV Configs, Scripts & Keybinds. This was setup on W
 
 ## Key Bindings
 
-| Key Bind             | Description                                |
-| -------------------- | ------------------------------------------ |
-| `b`                  | blackout (black screen)                    |
-| `Shift + Enter`      | Show playlist manager console              |
-| `Keypad <x>`         | Seek to `x*10%` (Youtube-esque seek)       |
-| `Ctrl + DEL`         | mark/unmark file to be deleted             |
-| `Alt + DEL`          | show the list of files marked for deletion |
-| `Ctrl + Alt + s`     | Download Subtitles                         |
-| `Ctrl + Shift + DEL` | clear the list of marked files             |
+| Key Bind             | Description                                                |
+| -------------------- | ---------------------------------------------------------- |
+| `b`                  | blackout (black screen)                                    |
+| `Keypad <x>`         | Seek to `x*10%` (Youtube-esque seek)                       |
+| `Ctrl + ALT + s`     | Download Subtitles                                         |
+| `SHIFT + Enter`      | Show playlist manager console                              |
+| `SHIFT + ALT + s`    | Cycle Playlist Sort                                        |
+| `SHIFT + ALT + h`    | Shuffle current playlist                                   |
+| `Ctrl + DEL`         | Mark/Unmark file to be deleted                             |
+| `ALT + DEL`          | Show the list of files marked for deletion                 |
+| `Ctrl + SHIFT + DEL` | Clear the list of marked files (files will not be deleted) |
 
-> Files will be deleted upon exit [more info](https://github.com/zenyd/mpv-scripts/tree/master?tab=readme-ov-file#delete-file).
+> Files will be deleted only upon exit [more info](https://github.com/zenyd/mpv-scripts/tree/master?tab=readme-ov-file#delete-file).
 
 ### Some Default Key binds 
 
@@ -61,4 +63,3 @@ This repository contains my MPV Configs, Scripts & Keybinds. This was setup on W
 | --------------- | ---------------- |
 | `PGUP` or `@`   | Next Chapter     |
 | `PGDOWN` or `!` | Previous Chapter |
-
