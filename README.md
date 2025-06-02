@@ -43,23 +43,52 @@ This repository contains my MPV Configs, Scripts & Keybinds. This was setup on W
 
 ## Key Bindings
 
-| Key Bind             | Description                                                |
-| -------------------- | ---------------------------------------------------------- |
-| `b`                  | blackout (black screen)                                    |
-| `Keypad <x>`         | Seek to `x*10%` (Youtube-esque seek)                       |
-| `Ctrl + ALT + s`     | Download Subtitles                                         |
-| `SHIFT + Enter`      | Show playlist manager console                              |
-| `SHIFT + ALT + s`    | Cycle Playlist Sort                                        |
-| `SHIFT + ALT + h`    | Shuffle current playlist                                   |
-| `Ctrl + DEL`         | Mark/Unmark file to be deleted                             |
-| `ALT + DEL`          | Show the list of files marked for deletion                 |
-| `Ctrl + SHIFT + DEL` | Clear the list of marked files (files will not be deleted) |
+### Miscellaneous Script Keybinds
+
+| Keybinds                                 | Description                            |
+| ---------------------------------------- | -------------------------------------- |
+| <kbd>b</kbd>                             | blackout (black screen)                |
+| <kbd>0</kbd> to <kbd>9</kbd> (on Keypad) | Seek to `num*10%` (Youtube-esque seek) |
+
+### Playlist Management
+
+| Keybinds                                         | Description                   |
+| ------------------------------------------------ | ----------------------------- |
+| <kbd>p</kbd>                                     | Peek current playlist         |
+| <kbd>Ctrl</kbd> + <kbd>→</kbd>                   | Next File                     |
+| <kbd>Ctrl</kbd> + <kbd>←</kbd>                   | Previous File                 |
+| <kbd>Shift</kbd> + <kbd>Enter</kbd>              | Show playlist manager console |
+| <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>s</kbd> | Cycle Playlist Sort           |
+| <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>h</kbd> | Shuffle current playlist      |
+| <kbd>c</kbd>                                     | Open contact sheet            |
+| <kbd>g</kbd>                                     | Open grid playlist view       |
+
+### Subtitle Keybinds 
+
+| Keybinds                                    | Description                 |
+| ------------------------------------------- | --------------------------- |
+| <kbd>v</kbd>                                | Toggle Subtitle             |
+| <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>s</kbd> | Download Subtitles          |
+| <kbd>j</kbd>                                | Cycle Subtitle              |
+| <kbd>z</kbd>                                | Reduce subtitle delay (1ms) |
+| <kbd>Shift</kbd> + <kbd>z</kbd>             | Add subtitle delay (1ms)    |
+
+### Bulk Delete Files
 
 > Files will be deleted only upon exit [more info](https://github.com/zenyd/mpv-scripts/tree/master?tab=readme-ov-file#delete-file).
 
-### Some Default Key binds 
+| Keybinds                                            | Description                                                |
+| --------------------------------------------------- | ---------------------------------------------------------- |
+| <kbd>Shift</kbd> + <kbd>Del</kbd>                   | Mark/Unmark file to be deleted                             |
+| <kbd>Alt</kbd> + <kbd>Del</kbd>                     | Show the list of files marked for deletion                 |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Del</kbd> | Clear the list of marked files (files will not be deleted) |
 
-| Key Bind        | Description      |
-| --------------- | ---------------- |
-| `PGUP` or `@`   | Next Chapter     |
-| `PGDOWN` or `!` | Previous Chapter |
+### Common Default Keybinds 
+
+| Keybinds                             | Description                           |
+| ------------------------------------ | ------------------------------------- |
+| <kbd>Page up</kbd> or <kbd>@</kbd>   | Next Chapter                          |
+| <kbd>Page down</kbd> or <kbd>!</kbd> | Next Chapter                          |
+| <kbd>a</kbd>                         | Cycle Aspect Ratio                    |
+| <kbd>s</kbd>                         | Screenshot View                       |
+| <kbd>Shift</kbd> + <kbd>s</kbd>      | Screenshot Video (without Screenshot) |
